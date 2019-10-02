@@ -1,0 +1,125 @@
+#!/bin/bash
+
+while :
+do
+
+	clear
+
+	echo -e '\e[36mFile menu\e[0m'
+	option=( 'Create File(1)' 'Delete File(2)' 'Create directory(3)' 'Delete directory(4)' 'Create symbolic link(5)' 'Change ownership(6)' 'Change Permissions(7)' 'Modify text(8)' 'Return to Main(9)' 'Shutdown(10)' )
+	echo ====================================================
+	for element in "${option[@]}"
+	do
+		echo ": $element"
+	done
+	echo ====================================================
+
+	read -p 'What to you want to do: ' act
+	filemenu=${act,,}
+
+	clear
+
+	case $filemenu in
+		createfile | touch | 1)
+			echo '\e[36mCreate File\e[0m'
+			echo ' '
+			ls -a
+			echo ' '
+			read -p 'File name(Full path): ' var1
+			touch $var1
+			ls -a
+			sleep 3
+			;;
+		deletefile | rm | 2)
+			echo '\e[36mDelete File\e[0m'
+			echo ' '
+			ls -a
+			echo ' '
+			sleep 0.01
+			read -p 'File name(Full path): ' var2
+			rm $var2
+			ls -a
+			sleep 3
+			;;
+		createdir | mkdir | 3)
+			echo '\e[36mCreate Directory\e[0m'
+			echo ' '
+			ls -a
+			echo ' '
+			read -p 'Directory name(Full path): ' var3
+			mkdir $var3
+			cd $var3
+			cd ..
+			ls -a
+			cd
+			sleep 3
+			;;
+		deletedir | rmdir | 4)
+			echo '\e[36mDelete Directory\e[0m'
+			echo ' '
+			ls -a
+			echo ' '
+			read -p 'Directory name(Full path): ' var4
+			cd $var4
+			cd ..
+			rm -rf $var4
+			ls -a
+			cd
+			sleep 3
+			;;
+		link | ln  | 5)
+			echo '\e[36mCreate Symbolic Link\e[0m'
+			echo ' '
+			sleep 0.01
+			read -p 'File to link(Full path): ' var5
+			read -p 'Link destanation(Full path): ' var6
+			ln -s $var5 $var6
+			;;
+		owner | chown | 6)
+			echo '\e[36mChange ownership\e[0m'
+			echo ' '
+			sleep 0.01
+			read -p 'What file to change ownership(Full path): ' var9
+			read -p 'What user: ' var7
+			read -p 'What group; ' var8
+			if [ $(getent group $var8) ]; then
+				echo "The group exists! Changing ownership"
+				chown $var7:$var8 $var9
+			else
+				echo "The group does not exist"
+				read -p "Would you like to create it[y/N]" var10
+				if [ $var10 = y ]; then
+					groupadd $var8
+					chown $var7:$var8 $var9
+				else
+					echo 'Ownership not changed'
+				fi
+			fi
+			;;
+		permission | chmod | 7)
+			echo '\e[36mChange permissions\e[0m'
+			echo ' '
+			sleep 0.01
+			read -p 'Permission level to be set: ' var11
+			read -p 'What file to change(Full path): ' var12
+			chmod $var11 $var12
+			;;
+		modify | vim | 8)
+			echo '\e[36mModify Text\e[0m'
+			echo ' '
+			sleep 0.01
+			read -p 'What file do you want to modify(Full path): ' var13
+			vim $var13
+			;;
+		return | exit | 9)
+			exit
+			;;
+		shutdown | shut | 10)
+			shutdown now
+			;;
+		*)
+			echo -e '\e[31mWrong input\e[0m'
+			sleep 3
+			;;
+	esac
+done

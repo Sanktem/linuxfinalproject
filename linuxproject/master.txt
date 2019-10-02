@@ -1,0 +1,52 @@
+#!/bin/bash
+
+while :
+do
+
+	clear
+
+	echo -e '\e[36mMaster menu\e[0m'
+	option=( 'File menu(1)' 'User menu(2)' 'Location menu(3)' 'Fun menu(4)' 'Process menu(5)' 'Exit(6)' 'Shutdown(7)' )
+	echo ====================================================
+	for element in "${option[@]}"
+	do
+		echo ": $element"
+	done
+	echo ====================================================
+
+	read -p 'What to you want to do: ' act
+	master=${act,,}
+
+	clear
+
+	case $master in
+		file | 1)
+			echo 'File menu'
+			echo ' '
+			sleep 0.01
+			bash menu/filemenu.txt
+			;;
+		user | 2)
+			echo 'User menu'
+			;;
+		find | 3)
+			echo 'Locating menu'
+			;;
+		fun | 4)
+			echo 'Fun menu'
+			;;
+		process | 5)
+			echo 'Process menu'
+			;;
+		exit | 6)
+			exit
+			;;
+		shutdown | shut | 7)
+			shutdown now
+			;;
+		*)
+			echo -e '\e[31mWrong input\e[0m'
+			sleep 3
+			;;
+	esac
+done
