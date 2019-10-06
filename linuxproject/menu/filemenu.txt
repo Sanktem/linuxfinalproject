@@ -1,16 +1,34 @@
 #!/bin/bash
 
-while :
+#Created by Dale Scott
+
+[ -z $CALLED_FROM_START_APP ] && { echo "Not called from master.txt"; exit 42; }
+
+# Easier colors
+black='\e[30m'
+red='\e[31m'
+green='\e[32m'
+yellow='\e[33m'
+blue='\e[34m'
+magenta='\e[35m'
+cyan='\e[36m'
+gray='\e[37m'
+white='\e[0m'
+
+clear
+
+while : #while loop
 do
 
 	clear
 
 	echo -e '\e[36mFile menu\e[0m'
 	option=( 'Create File(1)' 'Delete File(2)' 'Create directory(3)' 'Delete directory(4)' 'Create symbolic link(5)' 'Change ownership(6)' 'Change Permissions(7)' 'Modify text(8)' 'Return to Main(9)' 'Shutdown(10)' )
+	# List options
 	echo ====================================================
 	for element in "${option[@]}"
 	do
-		echo ": $element"
+		echo -e $green": $element"$white
 	done
 	echo ====================================================
 
@@ -20,7 +38,7 @@ do
 	clear
 
 	case $filemenu in
-		createfile | touch | 1)
+		createfile | touch | 1) # make a file
 			echo '\e[36mCreate File\e[0m'
 			echo ' '
 			ls -a
@@ -30,7 +48,7 @@ do
 			ls -a
 			sleep 3
 			;;
-		deletefile | rm | 2)
+		deletefile | rm | 2) # delete a file
 			echo '\e[36mDelete File\e[0m'
 			echo ' '
 			ls -a
@@ -41,7 +59,7 @@ do
 			ls -a
 			sleep 3
 			;;
-		createdir | mkdir | 3)
+		createdir | mkdir | 3) #make a dir
 			echo '\e[36mCreate Directory\e[0m'
 			echo ' '
 			ls -a
@@ -54,7 +72,7 @@ do
 			cd
 			sleep 3
 			;;
-		deletedir | rmdir | 4)
+		deletedir | rmdir | 4) #delete a dir
 			echo '\e[36mDelete Directory\e[0m'
 			echo ' '
 			ls -a
@@ -67,7 +85,7 @@ do
 			cd
 			sleep 3
 			;;
-		link | ln  | 5)
+		link | ln  | 5) #Creating a symboliclink
 			echo '\e[36mCreate Symbolic Link\e[0m'
 			echo ' '
 			sleep 0.01
@@ -75,25 +93,18 @@ do
 			read -p 'Link destanation(Full path): ' var6
 			ln -s $var5 $var6
 			;;
-		owner | chown | 6)
+		owner | chown | 6) # ChangeOwnership
 			echo '\e[36mChange ownership\e[0m'
 			echo ' '
 			sleep 0.01
 			read -p 'What file to change ownership(Full path): ' var9
 			read -p 'What user: ' var7
 			read -p 'What group; ' var8
-			if [ $(getent group $var8) ]; then
-				echo "The group exists! Changing ownership"
+			if grep -q $var7 /etc/passwd && [ $(getent group $var8) ]; then # makes sure the user and group exists
+				echo "The user and group exists! Changing ownership"
 				chown $var7:$var8 $var9
 			else
-				echo "The group does not exist"
-				read -p "Would you like to create it[y/N]" var10
-				if [ $var10 = y ]; then
-					groupadd $var8
-					chown $var7:$var8 $var9
-				else
-					echo 'Ownership not changed'
-				fi
+				echo "The group does not exist, returining to file menu!"
 			fi
 			;;
 		permission | chmod | 7)

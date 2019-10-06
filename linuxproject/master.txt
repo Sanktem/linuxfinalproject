@@ -1,16 +1,33 @@
 #!/bin/bash
 
-while :
+# Can only run from this script
+export CALLED_FROM_START_APP=yes:wq
+
+# Easier color
+black='\e[30m'
+red='\e[31m'
+green='\e[32m'
+yellow='\e[33m'
+blue='\e[34m'
+magenta='\e[35m'
+cyan='\e[36m'
+gray='\e[37m'
+white='\e[0m'
+
+clear
+
+while : #Start loop
 do
 
 	clear
 
-	echo -e '\e[36mMaster menu\e[0m'
+	echo -e $cyan'Master menu'$white
 	option=( 'File menu(1)' 'User menu(2)' 'Location menu(3)' 'Fun menu(4)' 'Process menu(5)' 'Exit(6)' 'Shutdown(7)' )
+	# List options for the user
 	echo ====================================================
 	for element in "${option[@]}"
 	do
-		echo ": $element"
+		echo -e $green": $element"$white
 	done
 	echo ====================================================
 
@@ -18,7 +35,8 @@ do
 	master=${act,,}
 
 	clear
-
+	
+	# Case for menu options
 	case $master in
 		file | 1)
 			echo 'File menu'
@@ -28,6 +46,9 @@ do
 			;;
 		user | 2)
 			echo 'User menu'
+			echo ' '
+			sleep 0.01
+			bash menu/usermenu.txt
 			;;
 		find | 3)
 			echo 'Locating menu'

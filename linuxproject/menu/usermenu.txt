@@ -1,39 +1,123 @@
 #!/bin/bash
 
-while :
+#Created by Dale Scott!
+
+
+# Stops the script not being used without running master.txt first
+[ -z $CALLED_FROM_START_APP ] && { echo "Not called from master.txt"; exit 42; }
+
+# makes the colors easier to add in
+black='\e[30m'
+red='\e[31m'
+green='\e[32m'
+yellow='\e[33m'
+blue='\e[34m'
+magenta='\e[35m'
+cyan='\e[36m'
+gray='\e[37m'
+white='\e[0m'
+
+clear
+
+while : # starts loop
 do
 
 	clear
 
-	echo -e '\e[36mMaster menu\e[0m'
-	option=( 'File menu(1)' 'User menu(2)' 'Location menu(3)' 'Fun menu(4)' 'Process menu(5)' 'Exit(6)' 'Shutdown(7)' )
+	echo -e $cyan'User menu'$white
+	# This will list out the options in the menu!
+	option=( 'Create User(1)' 'Change group for a user(2)' 'Create a group(3)' 'Delete User(4)' 'Change Password(5)' 'Exit(6)' 'Shutdown(7)' )
 	echo ====================================================
 	for element in "${option[@]}"
 	do
-		echo ": $element"
+		echo -e $green": $element"$white
 	done
 	echo ====================================================
 
 	read -p 'What to you want to do: ' act
-	master=${act,,}
+	user=${act,,}
 
-	clear
-
-	case $master in
-		file | 1)
-			echo 'File menu'
+	case $user in
+		useradd | 1)
+			echo 'Create a user'
+			read -p 'What is the name of the user you want to create?: ' var1
+			
+			if grep -q $user /etc/passwd # checks if the user is really there
+			then
+				echo The User exists! So no reason to recreate it!
+			else
+				echo Creating user!
+				useradd $var1
+				cat /etc/passwd | grep $var1 #shows the new user
+				sleep 3
+			fi
 			;;
-		user | 2)
-			echo 'User menu'
+		chgroup | 2)
+			while : 
+			do
+				echo 'Adds a group for a User'
+				echo ' '
+				read -p 'What user would you like to modify?: ' var2
+				read -p 'What group would you like to add to the the user?: ' var3
+				if grep -q $var2 /etc/passwd && [ getent group $var3 ]; then #makes sure the user and group exists
+					echo -e $green'Add the group to user, or override existing groups'$white
+					echo -e $grey'Numbers only'$white
+					read -p 'Add to user(1), Override goups(2)' var10
+					var10=${chgroup,,}
+					case $chgroup in # Picking for adding/override groups
+						1)
+							echo $red'Adding group'$white
+							usermod -a -G $var3 $var2
+							cat /etc/group | grep $var2
+							sleep 3
+							exit
+							;;
+						2)
+							echo $red'Overriding groups'$
+							usermod -G $var3 $var2
+							cat /etc/group | grep $var2
+							sleep 3
+							exit
+							;;
+						*)
+							echo -e $red'Wrong input'$white
+							;;
+					esac
+				else
+					echo -e $red'Wrong input'$white
+				fi
+			done	
 			;;
-		find | 3)
-			echo 'Locating menu'
+		groupadd | 3)
+			echo 'Create a group'
+			read -p 'What is the name of the group you want to create: ' var5
+			if [ $(getent group $var5) ]; then #finds if the group exists
+				echo "The group already exists! no reason to creat it"
+			else
+				echo "The group does not exist. Creating group"
+				groupadd $var5
+				cat /etc/groups | grep $var5 #lists out the group
+				sleep 3
+			fi
 			;;
-		fun | 4)
-			echo 'Fun menu'
+		userdel | 4)
+			echo 'Delete a user'
+			echo ' '
+			echo $red'WARNING: THIS WILL DELETE ALL USERS FILES'$white
+			read -p 'What user would you like to delete? ' var4 
+			if grep -q /etc/passwd # CHecks for user
+			then
+				echo -e $red'The user exists Deleting...'$white
+					userdel -r $var4 #deletes a user
+			else
+				echo 'The user does not exist returning to file menu'
+			fi
 			;;
-		process | 5)
-			echo 'Process menu'
+		passwd | 5)
+			echo 'Change a users password'
+			echo ' '
+			read -p 'What user would you like to change the password of?: ' var6
+			passwd $var6 #Changes the password of a user
 			;;
 		exit | 6)
 			exit
@@ -42,7 +126,7 @@ do
 			shutdown now
 			;;
 		*)
-			echo -e '\e[31mWrong input\e[0m'
+			echo -e $red'Wrong input'$white
 			;;
 	esac
 done
