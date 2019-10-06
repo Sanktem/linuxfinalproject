@@ -1,0 +1,104 @@
+#!/bin/bash
+
+#Created by Dale Scott!
+
+
+# Stops the script not being used without running master.txt first
+[ -z $CALLED_FROM_START_APP ] && { echo "Not called from master.txt"; exit 42; }
+
+# makes the colors easier to add in
+black='\e[30m'
+red='\e[31m'
+green='\e[32m'
+yellow='\e[33m'
+blue='\e[34m'
+magenta='\e[35m'
+cyan='\e[36m'
+gray='\e[37m'
+white='\e[0m'
+
+while :
+do
+
+	clear
+
+	echo -e '\e[36mProcess menu\e[0m' # menu name
+	option=( 'Show all processes(1)' 'Kill a process(2)' 'Bring up top(3)' 'Change priority for a running process(4)' 'Return to main(5)' 'Shutdown(6)' )
+	echo ====================================================
+	for element in "${option[@]}" # lists the options
+	do
+		echo -e $green": $element"$white
+	done
+	echo ====================================================
+
+	read -p 'What to you want to do: ' act # looks for user input
+	processmenu=${act,,}
+
+	clear
+
+	# Case for menu options
+	case $processmenu in
+		ps | show | 1)
+			echo -e $yellow'Show all processes'$white
+			echo ' '
+			ps -au # shows the current processes
+			echo ' '
+			read -p 'Contuinue(Press enter)' # waits for user input to contuine
+			;;
+		kill | 2)
+			echo 'Kill a process'
+			echo ' '
+			echo -e $yellow'Listing processes'$white
+			ps -au
+			ps -au >> process.txt #makes a file of the processes
+			echo ' '
+			read -p 'What process to kill(PID number): ' var1
+			if grep -q $var1 process.txt; then # sees if the process exists to kill
+				echo -e $magenta'The process exists! Killing it!'$white
+				kill -9 $var1 # kills the process
+				rm process.txt # removes the process file
+			else
+				echo -e $red'The precess does not exist retuning to process menu'$white
+			fi
+			;;
+		top | 3)
+			echo 'Brings up top'
+			clear
+			top # Brings up top
+			;;
+		renice | nice | 4)
+			echo 'Change priority for a running process'
+			echo ' '
+			echo -e $yellow'Listing processes'$white
+			ps -au
+			ps -au >> process.txt #makes a file of the processes
+			echo ' '
+			read -p 'What process to kill(PID number): ' var2
+			if grep -q $var1 process.txt; then # sees if the process exists to kill
+				echo -e $magenta'The process exists!'$white
+				read -p 'What priority do you set for the process (-19, 20): ' var3
+				if [ $var3 -lt 20 ] && [ $var3 -gt -19 ]; then #sees in the priortiyis is in range
+					renice -$var3 $var2 #changes prioty
+					ps -au
+					read -p 'Contuinue(Press enter)'
+				else
+					echo -e $red'Priority not in range'$white
+				fi
+			else
+				echo -e $red'The process does not exist'$white
+			fi
+			;;
+		exit | 5)
+			exit
+			;;
+		shutdown | shut | 6)
+			shutdown now
+			;;
+		*)
+			echo -e '\e[31mWrong input\e[0m'
+			echo ' '
+			read -p 'Continue(Press Enter)'
+			;;
+	esac
+done
+
