@@ -52,12 +52,21 @@ do
 			;;
 		find | 3)
 			echo 'Locating menu'
+			echo ' '
+			sleep 0.01
+			bash menu/findmenu.txt
 			;;
 		fun | 4)
 			echo 'Fun menu'
+			echo ' '
+			sleep 0.01
+			bash menu/funmenu.txt
 			;;
 		process | 5)
 			echo 'Process menu'
+			echo ' '
+			sleep 0.01
+			bash menu/processmenu.txt
 			;;
 		exit | 6)
 			exit
@@ -67,7 +76,8 @@ do
 			;;
 		*)
 			echo -e '\e[31mWrong input\e[0m'
-			sleep 3
+			echo ' '
+			read -p 'Continue(Press Enter)'
 			;;
 	esac
 done

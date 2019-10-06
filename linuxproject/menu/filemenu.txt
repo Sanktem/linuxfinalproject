@@ -46,7 +46,7 @@ do
 			read -p 'File name(Full path): ' var1
 			touch $var1
 			ls -a
-			sleep 3
+			read -p 'Continue (Press enter)'
 			;;
 		deletefile | rm | 2) # delete a file
 			echo '\e[36mDelete File\e[0m'
@@ -57,7 +57,7 @@ do
 			read -p 'File name(Full path): ' var2
 			rm $var2
 			ls -a
-			sleep 3
+			read -p 'Continue (Press enter)'
 			;;
 		createdir | mkdir | 3) #make a dir
 			echo '\e[36mCreate Directory\e[0m'
@@ -66,11 +66,8 @@ do
 			echo ' '
 			read -p 'Directory name(Full path): ' var3
 			mkdir $var3
-			cd $var3
-			cd ..
 			ls -a
-			cd
-			sleep 3
+			read -p 'Continue (Press enter)'
 			;;
 		deletedir | rmdir | 4) #delete a dir
 			echo '\e[36mDelete Directory\e[0m'
@@ -83,7 +80,7 @@ do
 			rm -rf $var4
 			ls -a
 			cd
-			sleep 3
+			read -p 'Continue (Press enter)'
 			;;
 		link | ln  | 5) #Creating a symboliclink
 			echo '\e[36mCreate Symbolic Link\e[0m'
@@ -92,6 +89,8 @@ do
 			read -p 'File to link(Full path): ' var5
 			read -p 'Link destanation(Full path): ' var6
 			ln -s $var5 $var6
+			ls -a $var6
+			read -p 'Continue (Press enter)'
 			;;
 		owner | chown | 6) # ChangeOwnership
 			echo '\e[36mChange ownership\e[0m'
@@ -103,6 +102,7 @@ do
 			if grep -q $var7 /etc/passwd && [ $(getent group $var8) ]; then # makes sure the user and group exists
 				echo "The user and group exists! Changing ownership"
 				chown $var7:$var8 $var9
+				ls -la $var9
 			else
 				echo "The group does not exist, returining to file menu!"
 			fi
@@ -114,6 +114,8 @@ do
 			read -p 'Permission level to be set: ' var11
 			read -p 'What file to change(Full path): ' var12
 			chmod $var11 $var12
+			ls -la $var12
+			read -p 'Continue (Press enter)'
 			;;
 		modify | vim | 8)
 			echo '\e[36mModify Text\e[0m'
@@ -130,7 +132,8 @@ do
 			;;
 		*)
 			echo -e '\e[31mWrong input\e[0m'
-			sleep 3
+			echo ' '
+			read -p 'Continue (Press enter)'
 			;;
 	esac
 done

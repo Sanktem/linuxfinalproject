@@ -49,7 +49,7 @@ do
 				echo Creating user!
 				useradd $var1
 				cat /etc/passwd | grep $var1 #shows the new user
-				sleep 3
+				read -p 'Continue (Press enter)'
 			fi
 			;;
 		chgroup | 2)
@@ -62,21 +62,24 @@ do
 				if grep -q $var2 /etc/passwd && [ getent group $var3 ]; then #makes sure the user and group exists
 					echo -e $green'Add the group to user, or override existing groups'$white
 					echo -e $grey'Numbers only'$white
-					read -p 'Add to user(1), Override goups(2)' var10
+					read -p 'Add to user(1), Override goups(2), Cancel(3)' var10
 					var10=${chgroup,,}
 					case $chgroup in # Picking for adding/override groups
 						1)
 							echo $red'Adding group'$white
 							usermod -a -G $var3 $var2
 							cat /etc/group | grep $var2
-							sleep 3
+							read -p 'Continue (Press enter)'
 							exit
 							;;
 						2)
 							echo $red'Overriding groups'$
 							usermod -G $var3 $var2
 							cat /etc/group | grep $var2
-							sleep 3
+							read -p 'Continue (Press enter)'
+							exit
+							;;
+						3)
 							exit
 							;;
 						*)
@@ -108,7 +111,9 @@ do
 			if grep -q /etc/passwd # CHecks for user
 			then
 				echo -e $red'The user exists Deleting...'$white
-					userdel -r $var4 #deletes a user
+				userdel -r $var4 #deletes a user
+				users
+				read -p 'Continue (Press enter)'
 			else
 				echo 'The user does not exist returning to file menu'
 			fi
@@ -127,6 +132,8 @@ do
 			;;
 		*)
 			echo -e $red'Wrong input'$white
+			echo ' '
+			read -p 'Continue (Press enter)'	
 			;;
 	esac
 done
