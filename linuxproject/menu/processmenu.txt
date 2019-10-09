@@ -73,7 +73,7 @@ do
 			ps -au
 			ps -au >> process.txt #makes a file of the processes
 			echo ' '
-			read -p 'What process to kill(PID number): ' var2
+			read -p 'What process to change(PID number): ' var2
 			if grep -q $var1 process.txt; then # sees if the process exists to kill
 				echo -e $magenta'The process exists!'$white
 				read -p 'What priority do you set for the process (-19, 20): ' var3

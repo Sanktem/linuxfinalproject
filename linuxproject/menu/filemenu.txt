@@ -35,11 +35,11 @@ do
 	read -p 'What to you want to do: ' act
 	filemenu=${act,,}
 
-	clear
+	echo ' '
 
 	case $filemenu in
 		createfile | touch | 1) # make a file
-			echo '\e[36mCreate File\e[0m'
+			echo -e '\e[36mCreate File\e[0m'
 			echo ' '
 			ls -a
 			echo ' '
@@ -49,7 +49,7 @@ do
 			read -p 'Continue (Press enter)'
 			;;
 		deletefile | rm | 2) # delete a file
-			echo '\e[36mDelete File\e[0m'
+			echo -e '\e[36mDelete File\e[0m'
 			echo ' '
 			ls -a
 			echo ' '
@@ -60,7 +60,7 @@ do
 			read -p 'Continue (Press enter)'
 			;;
 		createdir | mkdir | 3) #make a dir
-			echo '\e[36mCreate Directory\e[0m'
+			echo -e '\e[36mCreate Directory\e[0m'
 			echo ' '
 			ls -a
 			echo ' '
@@ -70,7 +70,7 @@ do
 			read -p 'Continue (Press enter)'
 			;;
 		deletedir | rmdir | 4) #delete a dir
-			echo '\e[36mDelete Directory\e[0m'
+			echo -e '\e[36mDelete Directory\e[0m'
 			echo ' '
 			ls -a
 			echo ' '
@@ -83,7 +83,7 @@ do
 			read -p 'Continue (Press enter)'
 			;;
 		link | ln  | 5) #Creating a symboliclink
-			echo '\e[36mCreate Symbolic Link\e[0m'
+			echo -e '\e[36mCreate Symbolic Link\e[0m'
 			echo ' '
 			sleep 0.01
 			read -p 'File to link(Full path): ' var5
@@ -93,7 +93,7 @@ do
 			read -p 'Continue (Press enter)'
 			;;
 		owner | chown | 6) # ChangeOwnership
-			echo '\e[36mChange ownership\e[0m'
+			echo -e '\e[36mChange ownership\e[0m'
 			echo ' '
 			sleep 0.01
 			read -p 'What file to change ownership(Full path): ' var9
@@ -108,7 +108,7 @@ do
 			fi
 			;;
 		permission | chmod | 7)
-			echo '\e[36mChange permissions\e[0m'
+			echo -e '\e[36mChange permissions\e[0m'
 			echo ' '
 			sleep 0.01
 			read -p 'Permission level to be set: ' var11
@@ -118,7 +118,7 @@ do
 			read -p 'Continue (Press enter)'
 			;;
 		modify | vim | 8)
-			echo '\e[36mModify Text\e[0m'
+			echo -e '\e[36mModify Text\e[0m'
 			echo ' '
 			sleep 0.01
 			read -p 'What file do you want to modify(Full path): ' var13

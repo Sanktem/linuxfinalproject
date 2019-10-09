@@ -37,9 +37,11 @@ do
 	read -p 'What to you want to do: ' act
 	user=${act,,}
 
+	echo ' '
+
 	case $user in
 		useradd | 1)
-			echo 'Create a user'
+			echo -e $cyan'Create a user'$white
 			read -p 'What is the name of the user you want to create?: ' var1
 			
 			if grep -q $user /etc/passwd # checks if the user is really there
@@ -55,7 +57,7 @@ do
 		chgroup | 2)
 			while : 
 			do
-				echo 'Adds a group for a User'
+				echo -e $cyan'Adds a group for a User'$white
 				echo ' '
 				read -p 'What user would you like to modify?: ' var2
 				read -p 'What group would you like to add to the the user?: ' var3
@@ -66,16 +68,18 @@ do
 					var10=${chgroup,,}
 					case $chgroup in # Picking for adding/override groups
 						1)
-							echo $red'Adding group'$white
-							usermod -a -G $var3 $var2
-							cat /etc/group | grep $var2
+							echo $green'Adding group'$white
+							usermod -a -G $var3 $var2 # '-a' adds the group to the user 
+							echo ' '
+							cat /etc/group | grep $var2 # shows the groups that the user is in
 							read -p 'Continue (Press enter)'
 							exit
 							;;
 						2)
-							echo $red'Overriding groups'$
-							usermod -G $var3 $var2
-							cat /etc/group | grep $var2
+							echo $green'Overriding groups'$white
+							usermod -G $var3 $var2 # overrides the existing groups on the user
+							echo ' '
+							cat /etc/group | grep $var2 # shows the groups the user is in
 							read -p 'Continue (Press enter)'
 							exit
 							;;
@@ -92,23 +96,27 @@ do
 			done	
 			;;
 		groupadd | 3)
-			echo 'Create a group'
+			echo -e $cyan'Create a group'$white
 			read -p 'What is the name of the group you want to create: ' var5
 			if [ $(getent group $var5) ]; then #finds if the group exists
-				echo "The group already exists! no reason to creat it"
+				echo -e $red"The group already exists! no reason to create it"$white #does not make the group if it is already there
 			else
-				echo "The group does not exist. Creating group"
+				echo $green"The group does not exist. Creating group"$white #if the group does not exist it's created
 				groupadd $var5
 				cat /etc/groups | grep $var5 #lists out the group
 				sleep 3
 			fi
 			;;
 		userdel | 4)
-			echo 'Delete a user'
+			echo -e $cyan'Delete a user'$white
 			echo ' '
-			echo $red'WARNING: THIS WILL DELETE ALL USERS FILES'$white
+			echo ' '
+			echo -e $red'WARNING: THIS WILL DELETE ALL USERS FILES'$white
+			echo -e $red'PROCEED WITH CAUTION'$ehite
+			echo ' '
+			echo ' '
 			read -p 'What user would you like to delete? ' var4 
-			if grep -q /etc/passwd # CHecks for user
+			if grep -q /etc/passwd # Checks for user
 			then
 				echo -e $red'The user exists Deleting...'$white
 				userdel -r $var4 #deletes a user

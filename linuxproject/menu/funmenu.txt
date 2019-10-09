@@ -1,12 +1,29 @@
 #!/bin/bash
 
+#Created by Dale Scott!
+
+
+# Stops the script not being used without running master.txt first
+[ -z $CALLED_FROM_START_APP ] && { echo "Not called from master.txt"; exit 42; }
+
+# makes the colors easier to add in
+black='\e[30m'
+red='\e[31m'
+green='\e[32m'
+yellow='\e[33m'
+blue='\e[34m'
+magenta='\e[35m'
+cyan='\e[36m'
+gray='\e[37m'
+white='\e[0m'
+
 while :
 do
 
 	clear
 
 	echo -e '\e[36mMaster menu\e[0m'
-	option=( 'File menu(1)' 'User menu(2)' 'Location menu(3)' 'Fun menu(4)' 'Process menu(5)' 'Exit(6)' 'Shutdown(7)' )
+	option=( 'Trains!(1)' 'Make the Cow say somthing(2)' 'Exit(3)' 'Shutdown(4)' )
 	echo ====================================================
 	for element in "${option[@]}"
 	do
@@ -15,30 +32,24 @@ do
 	echo ====================================================
 
 	read -p 'What to you want to do: ' act
-	master=${act,,}
+	fun=${act,,}
 
 	clear
 
-	case $master in
-		file | 1)
-			echo 'File menu'
+	case $fun in
+		sl | 1)
+			sl
 			;;
-		user | 2)
-			echo 'User menu'
+		cowsay | 2)
+			echo -e $green'Make the Cow say somthing!'$white
+			echo ' '
+			read -p 'What would you like it to say: ' var1
+			cowsay var1
 			;;
-		find | 3)
-			echo 'Locating menu'
-			;;
-		fun | 4)
-			echo 'Fun menu'
-			;;
-		process | 5)
-			echo 'Process menu'
-			;;
-		exit | 6)
+		exit | 3)
 			exit
 			;;
-		shutdown | shut | 7)
+		shutdown | shut | 4)
 			shutdown now
 			;;
 		*)

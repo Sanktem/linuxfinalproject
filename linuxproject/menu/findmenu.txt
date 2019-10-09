@@ -38,16 +38,24 @@ do
 
 	case $findmenu in
 		find | 1)
-			echo 'Find text within a file'
+			echo -e $yellow'Find text within a file'$white
 			echo ' ' 
 			read -p 'What file do you want to search?: ' var6
 			read -p 'What word are you looking for?: ' var5
-			echo ' '
 
-			echo -e $yellow $var6 $white #Displays the file
-			echo ' '
-			grep -Rinx $var5 $var6 #shows the word and line number
-			read -p 'Continue (Press enter)'
+			ls $var6 >> listing.txt
+			if grep -q $var6 listing.txt; then
+				echo ' '
+				rm listing.txt
+				echo -e $yellow $var6 $white #Displays the file
+				echo ' '
+				grep -n $var5 $var6 #shows the word and line number
+				read -p 'Continue (Press enter)'
+			else
+				echo -e $red'The file does not exist'$white
+				echo ' '
+				read -p 'Continue (Press enter)'
+			fi
 			;;
 		user | 2)
 			echo 'Show infomating about a user account'

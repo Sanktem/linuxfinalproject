@@ -16,6 +16,13 @@ white='\e[0m'
 
 clear
 
+echoc()
+{
+  w=$(stty size | cut -d" " -f2)       # width of the terminal
+  l=${#1}                              # length of the string
+  printf "%"$((l+(w-l)/2))"s\n" "$1"   # print string padded to proper width (%Ws)
+}
+
 while : #Start loop
 do
 
@@ -24,58 +31,58 @@ do
 	echo -e $cyan'Master menu'$white
 	option=( 'File menu(1)' 'User menu(2)' 'Location menu(3)' 'Fun menu(4)' 'Process menu(5)' 'Exit(6)' 'Shutdown(7)' )
 	# List options for the user
-	echo ====================================================
+	echo '===================================================='
 	for element in "${option[@]}"
 	do
 		echo -e $green": $element"$white
 	done
-	echo ====================================================
+	echo '===================================================='
 
 	read -p 'What to you want to do: ' act
 	master=${act,,}
 
-	clear
+	echo ' '
 	
 	# Case for menu options
 	case $master in
 		file | 1)
-			echo 'File menu'
+			echo $green'File menu'$white #opens file menu
 			echo ' '
 			sleep 0.01
 			bash menu/filemenu.txt
 			;;
 		user | 2)
-			echo 'User menu'
+			echo $green'User menu'$white #opens user meu
 			echo ' '
 			sleep 0.01
 			bash menu/usermenu.txt
 			;;
 		find | 3)
-			echo 'Locating menu'
+			echo $green'Locating menu'$white #opens find menu
 			echo ' '
 			sleep 0.01
 			bash menu/findmenu.txt
 			;;
 		fun | 4)
-			echo 'Fun menu'
+			echo $green'Fun menu'$white #opens fun menu
 			echo ' '
 			sleep 0.01
 			bash menu/funmenu.txt
 			;;
 		process | 5)
-			echo 'Process menu'
+			echo $green'Process menu'$white #opens process menu
 			echo ' '
 			sleep 0.01
 			bash menu/processmenu.txt
 			;;
 		exit | 6)
-			exit
+			exit #exits from program
 			;;
 		shutdown | shut | 7)
-			shutdown now
+			shutdown now #shuts down
 			;;
 		*)
-			echo -e '\e[31mWrong input\e[0m'
+			echo -e '\e[31mWrong input\e[0m' #iinforms the user if the user exists
 			echo ' '
 			read -p 'Continue(Press Enter)'
 			;;
