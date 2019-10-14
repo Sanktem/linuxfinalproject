@@ -1,7 +1,14 @@
 #!/bin/bash
-
-#Created by Dale Scott!
-
+# _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-
+# _____ _   _ _   _ __  __ _____ _   _ _   _ 
+#|  ___| | | | \ | |  \/  | ____| \ | | | | |
+#| |_  | | | |  \| | |\/| |  _| |  \| | | | |
+#|  _| | |_| | |\  | |  | | |___| |\  | |_| |
+#|_|    \___/|_| \_|_|  |_|_____|_| \_|\___/ 
+#
+# Created by: Dale Scott
+#
+# _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-
 
 # Stops the script not being used without running master.txt first
 [ -z $CALLED_FROM_START_APP ] && { echo "Not called from master.txt"; exit 42; }

@@ -1,6 +1,14 @@
 #!/bin/bash
-
-#Created by Dale Scott!
+#_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-
+# ____  ____   ___   ____ _____ ____ ____  __  __ _____ _   _ _   _ 
+#|  _ \|  _ \ / _ \ / ___| ____/ ___/ ___||  \/  | ____| \ | | | | |
+#| |_) | |_) | | | | |   |  _| \___ \___ \| |\/| |  _| |  \| | | | |
+#|  __/|  _ <| |_| | |___| |___ ___) |__) | |  | | |___| |\  | |_| |
+#|_|   |_| \_\\___/ \____|_____|____/____/|_|  |_|_____|_| \_|\___/ 
+#
+# Created by: Dale Scott
+#
+#_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-
 
 
 # Stops the script not being used without running master.txt first
@@ -74,6 +82,7 @@ do
 			ps -au >> process.txt #makes a file of the processes
 			echo ' '
 			read -p 'What process to change(PID number): ' var2
+			read -p 'What process to chang(PID number): ' var2
 			if grep -q $var1 process.txt; then # sees if the process exists to kill
 				echo -e $magenta'The process exists!'$white
 				read -p 'What priority do you set for the process (-19, 20): ' var3
