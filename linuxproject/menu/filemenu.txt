@@ -31,7 +31,7 @@ do
 
 	clear
 
-	echo -e '\e[36mFile menu\e[0m'
+	echo -e $bold$cyan'File menu'$white
 	option=( 'Create File(1)' 'Delete File(2)' 'Create directory(3)' 'Delete directory(4)' 'Create symbolic link(5)' 'Change ownership(6)' 'Change Permissions(7)' 'Modify text(8)' 'Return to Main(9)' 'Shutdown(10)' )
 	# List options
 	echo ====================================================
